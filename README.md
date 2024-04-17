@@ -1,6 +1,9 @@
 # Project Overview
 Apache Airflow Test Project
 
+Project는 영화진흥위원회의 오픈 API를 이용해 진행합니다. (아래 링크 참고)
+- https://www.kobis.or.kr/kobisopenapi/homepg/apiservice/searchServiceInfo.do
+
 # Prerequisites
 - Linux Ubuntu Server
     - Docker Community Edition
