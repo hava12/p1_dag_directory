@@ -9,11 +9,12 @@ import os
 load_dotenv()
 
 def fetch_data():
+    date_str=datetime.now().strftime('%Y%m%d')
     # REST API를 호출하여 데이터를 가져오는 함수
-    url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
+    url = os.getenv('api-url')
     params = {
-    'key1': 'value1',
-    'key2': 'value2'
+    'key': os.getenv('api-key'),
+    'targetDt': date_str
     }
     response = requests.get(url)  # requests 라이브러리를 사용해 API 호출
     data = response.json()  # 응답을 JSON으로 변환
@@ -26,8 +27,10 @@ def save_to_data_lake(data, **kwargs):
         storage_account_name = os.getenv('storage-account-name')
         storage_account_key = os.getenv('storage-account-key')
         file_system_name = os.getenv('storage-account-container-name')
+        date_str=datetime.now().strftime('%Y%m%d')
+
         # 저장할 파일 경로 설정
-        file_path = 'data_{date}.json'.format(date=datetime.now().strftime('%Y%m%d'))
+        file_path = 'data_{date}.json'.format(date=date_str)
 
         # Data Lake 서비스 클라이언트 초기화
         service_client = DataLakeServiceClient(account_url=f"https://{storage_account_name}.dfs.core.windows.net", credential=storage_account_key)
