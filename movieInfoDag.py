@@ -6,9 +6,15 @@ from azure.storage.filedatalake import DataLakeServiceClient
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 def fetch_data():
     # REST API를 호출하여 데이터를 가져오는 함수
-    url = "https://api.example.com/data"
+    url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
+    params = {
+    'key1': 'value1',
+    'key2': 'value2'
+    }
     response = requests.get(url)  # requests 라이브러리를 사용해 API 호출
     data = response.json()  # 응답을 JSON으로 변환
     return data  # 데이터 반환
@@ -17,9 +23,9 @@ def save_to_data_lake(data, **kwargs):
     # Azure Data Lake Storage Gen2에 데이터를 저장하는 함수
     try:
         # Azure 계정 설정 정보
-        storage_account_name = 'your_storage_account_name'
-        storage_account_key = 'your_storage_account_key'
-        file_system_name = 'your_file_system_name'
+        storage_account_name = os.getenv('storage-account-name')
+        storage_account_key = os.getenv('storage-account-key')
+        file_system_name = os.getenv('storage-account-container-name')
         # 저장할 파일 경로 설정
         file_path = 'data_{date}.json'.format(date=datetime.now().strftime('%Y%m%d'))
 
@@ -68,4 +74,5 @@ with DAG(
         op_kwargs={'data': '{{ ti.xcom_pull(task_ids="fetch_data") }}'},  # 이전 태스크에서 데이터 받기
     )
 
-    t1 >> t2  # t1 태스크 후 t2 태스크 실행
+    # t1 >> t2  # t1 태스크 후 t2 태스크 실행
+    t1
