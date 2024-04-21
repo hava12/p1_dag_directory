@@ -8,6 +8,7 @@ Project는 영화진흥위원회의 오픈 API를 이용해 진행합니다. (�
 - Linux Ubuntu Server
     - Docker Community Edition
     - Docker compose v1.29.1 이상
+- VSCode   
 
 # Airflow 구성 요소
 - Airflow Webserver
