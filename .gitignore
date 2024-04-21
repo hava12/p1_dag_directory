@@ -1,5 +1,7 @@
 venv/
 
+logs/*
+
 .env
 
 airflow-webserver.pid

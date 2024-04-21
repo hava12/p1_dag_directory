@@ -1,5 +1,6 @@
-export AIRFLOW_HOME=~/airflow_workspace/
+#!/bin/bash
+source ~/.bashrc
 
-airflow db init
+# airflow db init
 airflow webserver -p 8080
 airflow scheduler
