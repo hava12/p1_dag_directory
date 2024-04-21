@@ -23,3 +23,7 @@ Project는 영화진흥위원회의 오픈 API를 이용해 진행합니다. (�
     - CeleryExecutor와 사용되는 경우 Celery클러스터를 모니터링하는 웹 기반 툴
 - PostgreSQL or MySQL
     - Airflow의 메타데이터를 저장하는 데이터베이스
+
+# 진행 상황
+movieInfo_dag.py 파일 실행 테스트 진행 중 
+- DataLake 에 용량이 110Byte밖에 전송되지 않는 점 확인 필요
