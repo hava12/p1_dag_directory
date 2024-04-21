@@ -1,22 +1,28 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.configuration import conf
+
 import requests
 from azure.storage.filedatalake import DataLakeServiceClient
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+env_path="/home/derik/airflow_workspace.env"
+load_dotenv(dotenv_path=env_path)
 
 def fetch_data():
     date_str=datetime.now().strftime('%Y%m%d')
+    print(conf.get('movie-api', 'api-url'))
+    print(conf.get('movie-api', 'api-key'))
+
     # REST API를 호출하여 데이터를 가져오는 함수
-    url = os.getenv('api-url')
+    url = conf.get('movie-api', 'api-url')
     params = {
-    'key': os.getenv('api-key'),
+    'key': conf.get('movie-api', 'api-key'),
     'targetDt': date_str
     }
-    response = requests.get(url)  # requests 라이브러리를 사용해 API 호출
+    response = requests.get(url, params=params)  # requests 라이브러리를 사용해 API 호출
     data = response.json()  # 응답을 JSON으로 변환
     return data  # 데이터 반환
 
@@ -24,9 +30,9 @@ def save_to_data_lake(data, **kwargs):
     # Azure Data Lake Storage Gen2에 데이터를 저장하는 함수
     try:
         # Azure 계정 설정 정보
-        storage_account_name = os.getenv('storage-account-name')
-        storage_account_key = os.getenv('storage-account-key')
-        file_system_name = os.getenv('storage-account-container-name')
+        storage_account_name = conf.get('storage', 'storage-account-name')
+        storage_account_key = conf.get('storage', 'storage-account-key')
+        file_system_name = conf.get('storage', 'storage-account-container-name')
         date_str=datetime.now().strftime('%Y%m%d')
 
         # 저장할 파일 경로 설정
@@ -56,13 +62,12 @@ default_args = {
 }
 
 with DAG(
-    dag_id='api_to_azure_datalake',
+    dag_id='movieinfo_dag',
     default_args=default_args,
     description='Fetch data from API and store in Azure Data Lake',
     schedule_interval='0 0 * * *',  # 매일 자정에 실행
-    start_date=datetime(2023, 1, 1),  # DAG 시작 날짜
+    start_date=datetime(2024, 4, 20),  # DAG 시작 날짜
     catchup=False,  # 과거 누락된 실행을 캐치업하지 않음
-    tags=['example'],  # DAG 분류를 위한 태그
 ) as dag:
 
     t1 = PythonOperator(

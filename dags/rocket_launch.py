@@ -21,7 +21,6 @@ download_launches = BashOperator(
     dag=dag,
 )
 
-
 def _get_pictures():
     # Ensure directory exists
     pathlib.Path("/tmp/images").mkdir(parents=True, exist_ok=True)
