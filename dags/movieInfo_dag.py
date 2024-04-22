@@ -5,13 +5,12 @@ from airflow.configuration import conf
 
 import requests
 from azure.storage.filedatalake import DataLakeServiceClient
-from dotenv import load_dotenv
-import os
 
-env_path="/home/derik/airflow_workspace.env"
-load_dotenv(dotenv_path=env_path)
+yesterday = datetime.now() - timedelta(days=1)
+yesterday_date_str = yesterday.strftime('%Y%m%d')
 
 def fetch_data():
+
     date_str=datetime.now().strftime('%Y%m%d')
     print(conf.get('movie-api', 'api-url'))
     print(conf.get('movie-api', 'api-key'))
@@ -20,14 +19,21 @@ def fetch_data():
     url = conf.get('movie-api', 'api-url')
     params = {
     'key': conf.get('movie-api', 'api-key'),
-    'targetDt': date_str
+    'targetDt': yesterday_date_str
     }
+
     response = requests.get(url, params=params)  # requests 라이브러리를 사용해 API 호출
+
+    print("Status Code:", response.status_code)
+    print("Headers:", response.headers)
+    print("Body:", response.text)
     data = response.json()  # 응답을 JSON으로 변환
+    
     return data  # 데이터 반환
 
 def save_to_data_lake(data, **kwargs):
     # Azure Data Lake Storage Gen2에 데이터를 저장하는 함수
+    print(data)
     try:
         # Azure 계정 설정 정보
         storage_account_name = conf.get('storage', 'storage-account-name')
@@ -36,12 +42,15 @@ def save_to_data_lake(data, **kwargs):
         date_str=datetime.now().strftime('%Y%m%d')
 
         # 저장할 파일 경로 설정
-        file_path = 'data_{date}.json'.format(date=date_str)
+        file_path = 'data_{date}.json'.format(date=yesterday_date_str)
 
         # Data Lake 서비스 클라이언트 초기화
         service_client = DataLakeServiceClient(account_url=f"https://{storage_account_name}.dfs.core.windows.net", credential=storage_account_key)
         file_system_client = service_client.get_file_system_client(file_system=file_system_name)
         file_client = file_system_client.get_file_client(file_path)
+
+        print(data)
+        print(len(data))
 
         # 파일 생성 및 데이터 추가
         file_client.create_file()
@@ -83,4 +92,4 @@ with DAG(
     )
 
     # t1 >> t2  # t1 태스크 후 t2 태스크 실행
-    t1
+    t1 >> t2
