@@ -4,6 +4,8 @@ from airflow.operators.python import PythonOperator
 from airflow.configuration import conf
 
 import requests
+import json
+
 from azure.storage.filedatalake import DataLakeServiceClient
 
 yesterday = datetime.now() - timedelta(days=1)
@@ -44,18 +46,28 @@ def save_to_data_lake(data, **kwargs):
         # 저장할 파일 경로 설정
         file_path = 'data_{date}.json'.format(date=yesterday_date_str)
 
+        # ensure_ascii=False 설정을 추가하여 한글이 유니코드로 변경되지 않도록 함.
+        json_string = json.dumps(data, ensure_ascii=False)
+        data_bytes = json_string.encode('utf-8')  # UTF-8 바이트로 인코딩
+        data_bytes_euckr = json_string.encode('euc-kr')  # euc-kr 바이트로 인코딩
+
         # Data Lake 서비스 클라이언트 초기화
         service_client = DataLakeServiceClient(account_url=f"https://{storage_account_name}.dfs.core.windows.net", credential=storage_account_key)
         file_system_client = service_client.get_file_system_client(file_system=file_system_name)
         file_client = file_system_client.get_file_client(file_path)
 
-        print(data)
+        print(len(json_string))
         print(len(data))
+        print(len(data_bytes))
+        print(len(data_bytes_euckr))
+
+        print(data_bytes)
+        print(data_bytes_euckr)
 
         # 파일 생성 및 데이터 추가
         file_client.create_file()
-        file_client.append_data(data, 0, len(data))
-        file_client.flush_data(len(data))
+        file_client.append_data(data, 0, len(data_bytes)-2)
+        file_client.flush_data(len(data_bytes)-2)
         
         print("Data saved successfully to Azure Data Lake.")
     except Exception as e:
