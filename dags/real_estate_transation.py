@@ -1,12 +1,15 @@
 from airflow import DAG
+
+import airflow.utils.dates
+from datetime import datetime, timedelta
 from airflow.operators.python import PythonOperator
 
 with DAG(
-    'weather_dag',
+    'real_estate_transation',
     # default_args=default_args,
     description='A simple tutorial DAG',
     schedule_interval=timedelta(days=1),
-    start_date=days_ago(2),
+    start_date=airflow.utils.dates.days_ago(2),
     tags=['example'],
 ) as dag:
     
