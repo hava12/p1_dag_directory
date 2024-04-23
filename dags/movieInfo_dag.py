@@ -56,14 +56,6 @@ def save_to_data_lake(data, **kwargs):
         file_system_client = service_client.get_file_system_client(file_system=file_system_name)
         file_client = file_system_client.get_file_client(file_path)
 
-        print(len(json_string))
-        print(len(data))
-        print(len(data_bytes))
-        print(len(data_bytes_euckr))
-
-        print(data_bytes)
-        print(data_bytes_euckr)
-
         # 파일 생성 및 데이터 추가
         file_client.create_file()
         file_client.append_data(data, 0, len(data_bytes)-2)
