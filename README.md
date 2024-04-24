@@ -30,4 +30,4 @@ https://www.data.go.kr/data/15057511/openapi.do
     - Airflow의 메타데이터를 저장하는 데이터베이스
 
 # 진행 상황
-- 부동산 실거래 정보 API 호출 후 DataLake 적재 테스트 진행 중
+- 부동산 실거래 정보 API 호출 후 DataLake 적재 테스트 진행 중 (Success로 표시되나 Datalake에 적재되지 않음. 2024-04-26 문제 확인 예정)
