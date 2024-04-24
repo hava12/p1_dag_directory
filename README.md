@@ -8,6 +8,8 @@ Project는 영화진흥위원회의 오픈 API를 이용해 진행합니다. (�
 https://www.data.go.kr/data/15057511/openapi.do
 
 # Prerequisites
+- HDFS/Hive Server (Linux - Standalone) - 생성 전
+- Spark Server (Linux - Standalone) - 생성 전
 - Linux Ubuntu Server
     - Docker Community Edition
     - Docker compose v1.29.1 이상
@@ -28,5 +30,4 @@ https://www.data.go.kr/data/15057511/openapi.do
     - Airflow의 메타데이터를 저장하는 데이터베이스
 
 # 진행 상황
-movieInfo_dag.py 파일 실행 테스트 진행 중 
-- DataLake 에 용량이 110Byte밖에 전송되지 않는 점 확인 필요
+- 부동산 실거래 정보 API 호출 후 DataLake 적재 테스트 진행 중
