@@ -47,11 +47,8 @@ def save_real_estate_data_func(data, **kwargs):
         service_client = DataLakeServiceClient(account_url=f"https://{storage_account_name}.dfs.core.windows.net", credential=storage_account_key)
         file_system_client = service_client.get_file_system_client(file_system=file_system_name)
         file_client = file_system_client.get_file_client(file_path)
-        file_client.upload_data(xml_string, overwrite=True, length=len(xml_string))
+        file_client.upload_data(data, overwrite=True, length=len(data))
 
-        # 파일 생성 및 데이터 추가
-        file_client.create_file()
-        
         print("Data saved successfully to Azure Data Lake.")
     except Exception as e:
         print(f"An error occurred: {e}")
