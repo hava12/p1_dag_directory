@@ -73,8 +73,8 @@ with DAG(
 
     save_real_estate_data = PythonOperator(
         task_id="save_real_estate_data",
-        python_callable=lambda: print('Hi from python operator'),
-        # op_kwargs: Optional[Dict] = None,
+        python_callable=save_real_estate_data_func,
+        op_kwargs={'data': '{{ ti.xcom_pull(task_ids="get_real_estate_data") }}'},  # 이전 태스크에서 데이터 받기
         # op_args: Optional[List] = None,
         # templates_dict: Optional[Dict] = None
         # templates_exts: Optional[List] = None
