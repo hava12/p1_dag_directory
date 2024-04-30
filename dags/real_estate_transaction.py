@@ -19,8 +19,7 @@ def get_real_estate_data_func():
     # REST API를 호출하여 데이터를 가져오는 함수
     url = conf.get('estate-api', 'api-url')
     params = {
-    'key': conf.get('estate-api', 'api-key'),
-    'targetDt': yesterday_date_str
+        'ServiceKey': conf.get('estate-api', 'api-key'),
     }
 
     response = requests.get(url, params=params)  # requests 라이브러리를 사용해 API 호출
