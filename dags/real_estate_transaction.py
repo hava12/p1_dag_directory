@@ -8,11 +8,15 @@ from airflow.configuration import conf
 from azure.storage.filedatalake import DataLakeServiceClient
 import requests
 
-yesterday = datetime.now() - timedelta(days=1)
-yesterday_date_str = yesterday.strftime('%Y%m%d')
+# yesterday = datetime.now() - timedelta(days=1)
+# yesterday_date_str = yesterday.strftime('%Y%m%d')
 
-def get_real_estate_data_func():
+def get_real_estate_data_func(**kwargs):
     
+    execution_date = kwargs.get('execution_date')
+    yesterday_date = execution_date - timedelta(days=1)
+    yesterday_date_str = yesterday_date.strftime('%Y%m%d')
+
     print(conf.get('estate-api', 'api-url'))
     print(conf.get('estate-api', 'api-key'))
 
