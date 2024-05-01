@@ -6,8 +6,14 @@ Apache Airflow Test Project
 <!-- Project는 영화진흥위원회의 오픈 API를 이용해 진행합니다. (아래 링크 참고) -->
 <!-- - https://www.kobis.or.kr/kobisopenapi/homepg/apiservice/searchServiceInfo.do -->
 
-추가 : 아파트매매 실거래 상세 자료
+#### [API 정보] 
+
+- 아파트매매 실거래 상세 자료
 https://www.data.go.kr/data/15057511/openapi.do
+
+- 네이버 뉴스 API
+https://developers.naver.com/docs/serviceapi/search/news/news.md
+
 
 # Prerequisites
 - HDFS/Hive Server (Linux - Standalone) - 생성 전
