@@ -18,7 +18,7 @@ def get_real_estate_data_func(**kwargs):
     yesterday_date_str = yesterday_date.strftime('%Y%m%d')
 
     print(conf.get('estate-api', 'api-url'))
-    print(conf.get('estate-api', 'api-key'))
+    print(conf.get('estate-api', 'api-key')) 
 
     # REST API를 호출하여 데이터를 가져오는 함수
     url = conf.get('estate-api', 'api-url')
